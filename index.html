@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIPU · Autorización de Solicitudes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --verde-lipu:#1D9E75;
+    --verde-oscuro:#0E5C42;
+    --verde-claro:#EAF7F1;
+    --naranja:#E8833A;
+    --texto:#1F2A26;
+    --gris:#6B7A75;
+    --borde:#DCEAE3;
+    --rojo:#D0483F;
+    --sombra:0 6px 20px rgba(14,92,66,.10);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;font-family:'Inter',Arial,sans-serif;
+    background:linear-gradient(180deg,#F4FAF7 0%,#EDF6F1 100%);
+    color:var(--texto);min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:24px 18px 60px;}
+
+  .brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+  .brand-id .co{font-size:11px;letter-spacing:.14em;color:var(--gris);text-transform:uppercase;font-weight:600;}
+  .brand-id h1{margin:2px 0 0;font-size:22px;font-weight:800;color:var(--verde-oscuro);letter-spacing:-.01em;}
+  .brand-mark{
+    width:44px;height:44px;border-radius:12px;
+    background:linear-gradient(135deg,var(--verde-lipu),var(--verde-oscuro));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:800;font-size:17px;flex-shrink:0;box-shadow:var(--sombra);
+  }
+
+  .card{background:#fff;border-radius:16px;box-shadow:var(--sombra);padding:22px 20px;margin-bottom:16px;}
+
+  .field label{display:block;font-size:13px;font-weight:700;color:var(--verde-oscuro);margin-bottom:6px;}
+  .field select,.field input{
+    width:100%;padding:11px 12px;border:1.5px solid var(--borde);border-radius:10px;
+    font-family:inherit;font-size:14px;color:var(--texto);background:#FBFEFC;
+  }
+  .field select:focus,.field input:focus{
+    outline:none;border-color:var(--verde-lipu);background:#fff;box-shadow:0 0 0 3px rgba(29,158,117,.12);
+  }
+
+  .gerente-card{border:1.5px solid var(--verde-lipu);background:var(--verde-claro);}
+  .gerente-card .hint{font-size:12.5px;color:var(--gris);margin-top:8px;line-height:1.5;}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    padding:11px 18px;border:none;border-radius:10px;font-family:inherit;
+    font-size:13.5px;font-weight:700;cursor:pointer;transition:.15s;
+  }
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+  .btn-ok{background:var(--verde-lipu);color:#fff;}
+  .btn-ok:hover:not(:disabled){background:var(--verde-oscuro);}
+  .btn-no{background:#FCE8E6;color:#A5322A;border:1.5px solid #F2C4BF;}
+  .btn-no:hover:not(:disabled){background:#F9DAD6;}
+  .btn-ghost{background:var(--verde-claro);color:var(--verde-oscuro);}
+
+  .list-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .list-head .sub{font-size:12.5px;color:var(--gris);font-weight:600;}
+
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+  .chip{
+    border:1.5px solid var(--borde);background:#fff;color:var(--gris);
+    border-radius:20px;padding:7px 14px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;
+  }
+  .chip.on{background:var(--verde-oscuro);border-color:var(--verde-oscuro);color:#fff;}
+
+  .rec{border:1.5px solid var(--borde);border-radius:13px;padding:15px 16px;margin-bottom:12px;}
+  .rec.pendiente{border-color:#F3C98A;background:#FFFDF9;}
+  .rec-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+  .rec .folio{font-weight:800;font-size:14px;color:var(--verde-oscuro);}
+  .badge{border-radius:20px;padding:4px 11px;font-size:11.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;}
+  .badge.pend{background:#FFF1E0;color:#9A5B12;}
+  .badge.ok{background:#E2F6EC;color:#0E5C42;}
+  .badge.no{background:#FCE8E6;color:#A5322A;}
+
+  .datos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;font-size:13px;margin-bottom:12px;}
+  @media(max-width:560px){.datos{grid-template-columns:1fr;}}
+  .datos .k{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--gris);font-weight:700;}
+  .datos .v{color:var(--texto);font-weight:600;line-height:1.45;}
+  .datos .full{grid-column:1/-1;}
+
+  .acciones{display:flex;gap:9px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--borde);}
+  .resuelto{font-size:12.5px;color:var(--gris);font-weight:600;padding-top:10px;border-top:1px solid var(--borde);}
+
+  .msg{padding:11px 14px;border-radius:10px;font-size:13.5px;font-weight:600;margin-bottom:14px;}
+  .msg-ok{background:#E6F8EE;color:var(--verde-oscuro);}
+  .msg-err{background:#FCEBEA;color:var(--rojo);}
+  .empty,.loading{text-align:center;color:var(--gris);font-size:13.5px;padding:26px 0;}
+  .config-warning{
+    background:#FFF4E5;border:1.5px solid #F3C98A;color:#8A5A15;
+    padding:12px 14px;border-radius:10px;font-size:12.5px;margin-bottom:16px;line-height:1.5;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <div class="brand-id">
+      <span class="co">LIPU by TRAXION</span>
+      <h1>Autorización de Solicitudes</h1>
+    </div>
+    <div class="brand-mark">L</div>
+  </div>
+
+  <div id="configWarning" class="config-warning" style="display:none;">
+    ⚠️ Falta configurar <code>CONFIG.API_URL</code> con la URL /exec de tu Web App de Apps Script.
+  </div>
+
+  <div class="card gerente-card">
+    <div class="field">
+      <label>¿Quién está autorizando?</label>
+      <select id="selGerente" onchange="guardarGerente()">
+        <option value="">Selecciona tu nombre…</option>
+      </select>
+    </div>
+    <div class="hint">Debes seleccionar tu nombre antes de poder autorizar o rechazar. Queda registrado en la hoja junto con la solicitud.</div>
+  </div>
+
+  <div class="card">
+    <div class="list-head">
+      <div>
+        <strong style="color:var(--verde-oscuro);font-size:15px;">Solicitudes</strong>
+        <div class="sub">Únicamente las del día anterior y de hoy</div>
+      </div>
+      <button class="btn btn-ghost" onclick="cargarRegistros()">Actualizar</button>
+    </div>
+
+    <div id="msgArea"></div>
+
+    <div class="chips" id="chipsStatus">
+      <button class="chip on" data-st="Pendiente" onclick="filtrarStatus('Pendiente')">Pendientes</button>
+      <button class="chip" data-st="TODOS" onclick="filtrarStatus('TODOS')">Todas</button>
+      <button class="chip" data-st="Autorizado" onclick="filtrarStatus('Autorizado')">Autorizadas</button>
+      <button class="chip" data-st="Rechazado" onclick="filtrarStatus('Rechazado')">Rechazadas</button>
+    </div>
+
+    <div id="lista"><div class="loading">Cargando solicitudes…</div></div>
+  </div>
+
+</div>
+
+<script>
+/* ============ CONFIGURACIÓN ============ */
+const CONFIG = {
+  API_URL: 'https://script.google.com/macros/s/AKfycbxn_foY9yjp-hOMN-RzF-NP_cdC3EvLp-kPNdg2T0S5TflgjTWYaaoL3n_4RYC-XcZPMw/exec'
+};
+
+const OPCIONES_GERENTE = ['Ezequiel Pulido','Eduardo Ramos'];
+
+const CAMPO_FOLIO   = 'No. de reporte';
+const CAMPO_STATUS  = 'Status';
+const CAMPO_GERENTE = 'Gerente que autoriza';
+const CAMPO_FECHA_AUT = 'Fecha de autorizacion';
+
+let registrosCache = [];
+let filtroStatus = 'Pendiente';
+
+/* ============ INIT ============ */
+(function init(){
+  const sel = document.getElementById('selGerente');
+  OPCIONES_GERENTE.forEach(g=>{
+    const o = document.createElement('option');
+    o.value = g; o.textContent = g;
+    sel.appendChild(o);
+  });
+  try{
+    const guardado = localStorage.getItem('lipu_gerente');
+    if (guardado && OPCIONES_GERENTE.includes(guardado)) sel.value = guardado;
+  }catch(e){}
+
+  if (!CONFIG.API_URL || CONFIG.API_URL.includes('PEGA_AQUI')){
+    document.getElementById('configWarning').style.display = 'block';
+  }
+  cargarRegistros();
+})();
+
+function guardarGerente(){
+  try{ localStorage.setItem('lipu_gerente', document.getElementById('selGerente').value); }catch(e){}
+  render();
+}
+
+function gerenteActual(){
+  return document.getElementById('selGerente').value;
+}
+
+/* ============ CARGA ============ */
+async function cargarRegistros(){
+  const cont = document.getElementById('lista');
+  cont.innerHTML = '<div class="loading">Cargando solicitudes…</div>';
+  try{
+    const res = await fetch(CONFIG.API_URL);
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Error al cargar');
+    registrosCache = (data.rows || []).filter(esAyerUHoy);
+    render();
+  }catch(err){
+    cont.innerHTML = '<div class="msg msg-err">No se pudo conectar con la hoja. ('+escapeHtml(err.message)+')</div>';
+  }
+}
+
+function esAyerUHoy(r){
+  const f = fechaDeRegistro(r);
+  if (!f) return false;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const ayer = new Date(hoy); ayer.setDate(ayer.getDate()-1);
+  return f >= ayer;
+}
+
+function fechaDeRegistro(r){
+  const crudo = r['Marca temporal'] || r['Fecha de solicitud'] || '';
+  const m = String(crudo).match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return new Date(+m[1], +m[2]-1, +m[3]);
+  const m2 = String(crudo).match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m2) return new Date(+m2[3], +m2[2]-1, +m2[1]);
+  const d = new Date(crudo);
+  if (!isNaN(d)) { d.setHours(0,0,0,0); return d; }
+  return null;
+}
+
+function statusDe(r){
+  const s = String(r[CAMPO_STATUS]||'').trim();
+  return s || 'Pendiente';
+}
+
+function filtrarStatus(st){
+  filtroStatus = st;
+  document.querySelectorAll('#chipsStatus .chip').forEach(c=>c.classList.toggle('on', c.dataset.st===st));
+  render();
+}
+
+/* ============ RENDER ============ */
+function render(){
+  const cont = document.getElementById('lista');
+  const hayGerente = !!gerenteActual();
+
+  let regs = registrosCache.slice();
+  if (filtroStatus !== 'TODOS') regs = regs.filter(r => statusDe(r) === filtroStatus);
+
+  if (!regs.length){
+    cont.innerHTML = '<div class="empty">Sin solicitudes de ayer ni de hoy con ese filtro.</div>';
+    return;
+  }
+
+  // Pendientes primero, luego las más recientes
+  regs.sort((a,b)=>{
+    const pa = statusDe(a)==='Pendiente' ? 0 : 1;
+    const pb = statusDe(b)==='Pendiente' ? 0 : 1;
+    if (pa !== pb) return pa - pb;
+    return (b._row||0) - (a._row||0);
+  });
+
+  cont.innerHTML = '';
+  regs.forEach(r=>{
+    const st = statusDe(r);
+    const cls = st==='Autorizado' ? 'ok' : (st==='Rechazado' ? 'no' : 'pend');
+    const div = document.createElement('div');
+    div.className = 'rec' + (st==='Pendiente' ? ' pendiente' : '');
+    div.innerHTML = `
+      <div class="rec-top">
+        <span class="folio">${escapeHtml(r[CAMPO_FOLIO]||'—')}</span>
+        <span class="badge ${cls}">${escapeHtml(st)}</span>
+      </div>
+      <div class="datos">
+        <div><div class="k">Planta</div><div class="v">${escapeHtml(r['PLANTA']||'—')}</div></div>
+        <div><div class="k">Tipo</div><div class="v">${escapeHtml(r['Tipo de solicitud']||'—')}</div></div>
+        <div class="full"><div class="k">Motivo</div><div class="v">${escapeHtml(r['Motivo de solicitud']||'—')}</div></div>
+        <div><div class="k">Ruta</div><div class="v">${escapeHtml(r['Ruta']||'—')}</div></div>
+        <div><div class="k">Fecha / horario</div><div class="v">${escapeHtml(r['Fecha de solicitud']||'—')} · ${escapeHtml(r['Hora de Inicio']||'—')}–${escapeHtml(r['Hora de Llegada']||'—')}</div></div>
+        <div><div class="k">Taxis locales / foráneos</div><div class="v">${escapeHtml(r['Cantidad de taxis locales']||'0')} / ${escapeHtml(r['Cantidad de taxis foraneos']||'0')}</div></div>
+        <div><div class="k">Operador</div><div class="v">${escapeHtml(r['Operador']||'—')}</div></div>
+        <div><div class="k">Usuarios</div><div class="v">${escapeHtml(r['Usuarios']||'—')}</div></div>
+        <div><div class="k">Inplant que solicita</div><div class="v">${escapeHtml(r['Inplant que solicita']||'—')}</div></div>
+      </div>
+      <div class="zona-accion"></div>
+    `;
+
+    const zona = div.querySelector('.zona-accion');
+    if (st === 'Pendiente'){
+      const acc = document.createElement('div');
+      acc.className = 'acciones';
+
+      const bOk = document.createElement('button');
+      bOk.className = 'btn btn-ok';
+      bOk.textContent = '✓ Autorizar';
+      bOk.disabled = !hayGerente;
+      bOk.onclick = ()=>cambiarStatus(r, 'Autorizado', div);
+
+      const bNo = document.createElement('button');
+      bNo.className = 'btn btn-no';
+      bNo.textContent = '✕ Rechazar';
+      bNo.disabled = !hayGerente;
+      bNo.onclick = ()=>cambiarStatus(r, 'Rechazado', div);
+
+      acc.appendChild(bOk);
+      acc.appendChild(bNo);
+
+      if (!hayGerente){
+        const aviso = document.createElement('span');
+        aviso.style.cssText = 'font-size:12.5px;color:#9A5B12;font-weight:600;align-self:center;';
+        aviso.textContent = 'Selecciona arriba quién autoriza';
+        acc.appendChild(aviso);
+      }
+      zona.appendChild(acc);
+    } else {
+      const info = document.createElement('div');
+      info.className = 'resuelto';
+      info.textContent = st + ' por ' + (r[CAMPO_GERENTE] || '—')
+        + (r[CAMPO_FECHA_AUT] ? ' · ' + r[CAMPO_FECHA_AUT] : '');
+      zona.appendChild(info);
+    }
+
+    cont.appendChild(div);
+  });
+}
+
+/* ============ AUTORIZAR / RECHAZAR ============ */
+async function cambiarStatus(r, nuevoStatus, tarjeta){
+  const gerente = gerenteActual();
+  const msgArea = document.getElementById('msgArea');
+  msgArea.innerHTML = '';
+
+  if (!gerente){
+    msgArea.innerHTML = '<div class="msg msg-err">Selecciona primero quién está autorizando.</div>';
+    return;
+  }
+
+  const botones = tarjeta.querySelectorAll('button');
+  botones.forEach(b=>b.disabled = true);
+
+  try{
+    const res = await fetch(CONFIG.API_URL, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({
+        action:'status',
+        row: r._row,
+        folio: r[CAMPO_FOLIO],
+        status: nuevoStatus,
+        gerente: gerente
+      })
+    });
+    const result = await res.json();
+    if (!result.ok) throw new Error(result.error || 'Error al actualizar');
+
+    // Actualiza el cache local sin recargar todo
+    r[CAMPO_STATUS] = nuevoStatus;
+    r[CAMPO_GERENTE] = gerente;
+    r[CAMPO_FECHA_AUT] = result.fecha || '';
+
+    msgArea.innerHTML = '<div class="msg msg-ok">'+escapeHtml(r[CAMPO_FOLIO]||'')+' · '
+      + nuevoStatus.toLowerCase() + ' por ' + escapeHtml(gerente) + '.</div>';
+    render();
+  }catch(err){
+    msgArea.innerHTML = '<div class="msg msg-err">No se pudo actualizar: '+escapeHtml(err.message)+'</div>';
+    botones.forEach(b=>b.disabled = false);
+  }
+}
+
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+</html>
